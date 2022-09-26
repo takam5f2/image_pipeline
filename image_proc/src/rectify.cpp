@@ -53,7 +53,7 @@ RectifyNode::RectifyNode(const rclcpp::NodeOptions & options)
   interpolation = this->declare_parameter("interpolation", 1);
   pub_rect_ = image_transport::create_publisher(
     this, "image_rect",
-    (use_qos_ ? rmw_qos_profile_default : rmw_qos_profile_sensor_data));
+    (use_qos_ ? rclcpp::QoS(10).lifespan(std::chrono::milliseconds(100)).get_rmw_qos_profile() : rmw_qos_profile_sensor_data));
   subscribeToCamera();
 }
 
@@ -74,7 +74,7 @@ void RectifyNode::subscribeToCamera()
     this, "image", std::bind(
       &RectifyNode::imageCb,
       this, std::placeholders::_1, std::placeholders::_2), "raw",
-    (use_qos_ ? rmw_qos_profile_default : rmw_qos_profile_sensor_data));
+    (use_qos_ ? rclcpp::QoS(10).lifespan(std::chrono::milliseconds(100)).get_rmw_qos_profile() : rmw_qos_profile_sensor_data));
   // }
 }
 
