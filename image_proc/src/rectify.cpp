@@ -123,6 +123,7 @@ void RectifyNode::imageCb(
 
   // This will be true if D is empty/zero sized
   if (zero_distortion) {
+    RCLCPP_INFO(this->get_logger(), "Publish rect image");
     pub_rect_.publish(image_msg);
     TRACEPOINT(
       image_proc_rectify_fini,
@@ -145,6 +146,7 @@ void RectifyNode::imageCb(
   // Allocate new rectified image message
   sensor_msgs::msg::Image::SharedPtr rect_msg =
     cv_bridge::CvImage(image_msg->header, image_msg->encoding, rect).toImageMsg();
+  RCLCPP_INFO(this->get_logger(), "Publish rect image");
   pub_rect_.publish(rect_msg);
 
   TRACEPOINT(
